@@ -1,0 +1,40 @@
+{
+  "name": "collaborative-edit-server",
+  "version": "1.0.0",
+  "description": "HuashuiAI collaborative edit server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "prod": "pm2 start src/index.js --name collaborate-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hocuspocus/extension-database": "^2.13.5",
+    "@hocuspocus/extension-logger": "^2.13.5",
+    "@hocuspocus/server": "^2.13.5",
+    "@hocuspocus/transformer": "^2.13.5",
+    "@koa/cors": "^5.0.0",
+    "@tiptap/extension-highlight": "^2.5.5",
+    "@tiptap/extension-link": "^2.5.5",
+    "@tiptap/extension-subscript": "^2.5.5",
+    "@tiptap/extension-superscript": "^2.5.5",
+    "@tiptap/extension-task-item": "^2.5.5",
+    "@tiptap/extension-task-list": "^2.5.5",
+    "@tiptap/extension-text-align": "^2.5.5",
+    "@tiptap/extension-underline": "^2.5.5",
+    "@tiptap/starter-kit": "^2.5.5",
+    "dotenv": "^16.4.5",
+    "koa": "^2.15.3",
+    "koa-easy-ws": "^2.1.0",
+    "koa-router": "^12.0.1",
+    "nodemailer": "^6.9.14",
+    "nodemon": "^3.1.4",
+    "pg": "^8.12.0",
+    "pm2": "^5.4.2",
+    "yjs": "^13.6.18"
+  }
+}
