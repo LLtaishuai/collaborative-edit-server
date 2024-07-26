@@ -15,15 +15,19 @@ router.get('/', async (ctx) => {
   ctx.body = 'huashuiAI colla server'
 })
 router.get('/collaborate', async (ctx) => {
-  const ws = await ctx.ws()
+  if (ctx.ws) {
+    const ws = await ctx.ws()
 
-  hocuspocusServer.handleConnection(
-    ws,
-    ctx.request
+    hocuspocusServer.handleConnection(
+      ws,
+      ctx.request
 
-    // // additional data (optional)
-    // { user_id: 1234 }
-  )
+      // // additional data (optional)
+      // { user_id: 1234 }
+    )
+  } else {
+    ctx.body = 'collaborate route'
+  }
 })
 app.use(router.routes()).use(router.allowedMethods())
 
