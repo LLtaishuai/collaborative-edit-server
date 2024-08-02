@@ -12,7 +12,7 @@ app.use(websocket())
 
 const router = new Router()
 router.get('/', async (ctx) => {
-  ctx.body = 'huashuiAI colla server'
+  ctx.body = 'huashuiAI colla server' //【注意】心跳检测 monitor 会检测这个字符串，不要随意修改！
 })
 router.get('/collaborate', async (ctx) => {
   if (ctx.ws) {
