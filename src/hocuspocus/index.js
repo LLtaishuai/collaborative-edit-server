@@ -5,6 +5,8 @@ const { TiptapTransformer } = require('@hocuspocus/transformer')
 const Y = require('yjs')
 const { basicExts } = require('./exts')
 const { updateDocJsonStr, updateDocBinary, getDocById } = require('../db/doc')
+const { decryptToken } = require('../lib/token')
+const { getShareRelationAccess } = require('../db/share-relation')
 
 // on store document
 async function onStoreDocument(data) {
@@ -49,7 +51,29 @@ async function dbStore({ documentName, state }) {
   console.log('hocuspocus db store updated rowCount: ', rowContent)
 }
 
+// on authenticate
+async function onAuthenticate(data) {
+  const { documentName, token } = data
+  if (token == null || !token) throw new Error('Token is required')
+
+  const info = decryptToken(token)
+  if (info == null) throw new Error('Token is invalid or expired')
+  // console.log('hocuspocus onAuthenticate info ... ', info)
+
+  const access = await getShareRelationAccess(documentName, info.userId)
+  console.log('hocuspocus onAuthenticate access ... ', access)
+  if (access == null) throw new Error('You do not have access to this document')
+  if (access == 'READ') {
+    data.connection.readOnly = true
+  }
+
+  return {
+    userId: info.userId,
+  }
+}
+
 const hocuspocusServer = Server.configure({
+  onAuthenticate,
   onStoreDocument,
   extensions: [
     new Logger(),

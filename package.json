@@ -27,6 +27,7 @@
     "@tiptap/extension-text-align": "^2.5.5",
     "@tiptap/extension-underline": "^2.5.5",
     "@tiptap/starter-kit": "^2.5.5",
+    "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "koa": "^2.15.3",
     "koa-easy-ws": "^2.1.0",
