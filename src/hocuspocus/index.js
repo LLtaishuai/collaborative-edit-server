@@ -6,16 +6,25 @@ const Y = require('yjs')
 const { basicExts } = require('./exts')
 const { updateDocJsonStr, updateDocBinary, getDocById } = require('../db/doc')
 const { decryptToken } = require('../lib/token')
-const { getShareRelationAccess } = require('../db/share-relation')
+const {
+  getShareRelationAccess,
+  updateShareRelationNoticeType,
+} = require('../db/share-relation')
 
 // on store document
 async function onStoreDocument(data) {
   const documentName = data.documentName
+
+  // update doc json content
   const json = TiptapTransformer.fromYdoc(data.document, 'default')
   // console.log('hocuspocus onStoreDocument .... ', data.documentName, json)
   const jsonStr = JSON.stringify(json)
   const rowCount = await updateDocJsonStr(documentName, jsonStr)
   console.log('hocuspocus onStoreDocument updated rowCount: ', rowCount)
+
+  // update share relation notice type to 'UPDATE'
+  const context = data.context || {}
+  await updateShareRelationNoticeType(documentName, context.userId)
 }
 
 // on db fetch doc

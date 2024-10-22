@@ -31,6 +31,22 @@ async function getShareRelationAccess(docId, userId) {
   }
 }
 
+/**
+ * update share relation notice type to 'UPDATE'
+ * @param {string} docId doc id
+ * @param {string} userId user id
+ */
+async function updateShareRelationNoticeType(docId, userId) {
+  const sql = `update "ShareRelation" set "noticeType" = 'UPDATE' where "docId" = $1 and "userId" <> $2`
+  const values = [docId, userId]
+  try {
+    const res = await pgClient.query(sql, values)
+  } catch (err) {
+    console.error('hocuspocus db updateShareRelationNoticeType error', err)
+  }
+}
+
 module.exports = {
   getShareRelationAccess,
+  updateShareRelationNoticeType,
 }
