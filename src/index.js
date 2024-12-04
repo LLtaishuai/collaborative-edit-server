@@ -3,6 +3,7 @@ const websocket = require('koa-easy-ws')
 const Router = require('koa-router')
 const { hocuspocusServer } = require('./hocuspocus')
 const { connect } = require('./db/client')
+const { selectOneDocForMonitor } = require('./db/doc')
 require('dotenv').config()
 
 const app = new Koa()
@@ -12,8 +13,15 @@ app.use(websocket())
 
 const router = new Router()
 router.get('/', async (ctx) => {
-  ctx.body = 'huashuiAI colla server' //【注意】心跳检测 monitor 会检测这个字符串，不要随意修改！
+  ctx.body = 'huashuiAI colla server'
 })
+
+//【注意】心跳检测 monitor 会检测，不要随意修改！
+router.get('/selectOneDoc', async (ctx) => {
+  const doc = await selectOneDocForMonitor()
+  ctx.body = doc // 格式如 {"id":"xxxx"}
+})
+
 router.get('/collaborate', async (ctx) => {
   if (ctx.ws) {
     const ws = await ctx.ws()

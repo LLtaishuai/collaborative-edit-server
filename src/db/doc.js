@@ -65,4 +65,24 @@ async function getDocById(id) {
   }
 }
 
-module.exports = { updateDocJsonStr, updateDocBinary, getDocById }
+/**
+ * select one doc for monitor
+ * @returns {object | null} doc object or null
+ */
+async function selectOneDocForMonitor() {
+  try {
+    const sql = `select id from "Doc" limit 1`
+    const result = await pgClient.query(sql)
+    return result.rows[0]
+  } catch (err) {
+    console.error('hocuspocus db selectOneDocForMonitor error', err)
+    return null
+  }
+}
+
+module.exports = {
+  updateDocJsonStr,
+  updateDocBinary,
+  getDocById,
+  selectOneDocForMonitor,
+}
