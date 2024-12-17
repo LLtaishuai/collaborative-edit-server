@@ -1,4 +1,4 @@
-const { pgClient } = require('./client')
+const { pgClient, reconnect } = require('./client')
 const { sendEmail } = require('../lib/mailer')
 
 /**
@@ -19,6 +19,7 @@ async function updateDocJsonStr(id, jsonStr) {
       subject: 'hocuspocus db updateDocJsonStr error',
       text: err.message || 'error',
     })
+    reconnect()
     return 0
   }
 }
@@ -41,6 +42,7 @@ async function updateDocBinary(id, binary) {
       subject: 'hocuspocus db updateDocBinary error',
       text: err.message || 'error',
     })
+    reconnect()
     return 0
   }
 }
@@ -61,6 +63,7 @@ async function getDocById(id) {
       subject: 'hocuspocus db getDocById error',
       text: err.message || 'error',
     })
+    reconnect()
     return null
   }
 }
@@ -76,6 +79,7 @@ async function selectOneDocForMonitor() {
     return result.rows[0]
   } catch (err) {
     console.error('hocuspocus db selectOneDocForMonitor error', err)
+    reconnect()
     return null
   }
 }

@@ -1,4 +1,4 @@
-const { pgClient } = require('./client')
+const { pgClient, reconnect } = require('./client')
 
 /**
  * Get share relation
@@ -28,6 +28,7 @@ async function getShareRelationAccess(docId, userId) {
     return getShareRelationResult.rows[0]?.access || null
   } catch (err) {
     console.error('hocuspocus db getShareRelationAccess error', err)
+    reconnect()
   }
 }
 
@@ -43,6 +44,7 @@ async function updateShareRelationNoticeType(docId, userId) {
     const res = await pgClient.query(sql, values)
   } catch (err) {
     console.error('hocuspocus db updateShareRelationNoticeType error', err)
+    reconnect()
   }
 }
 
