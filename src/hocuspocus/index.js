@@ -24,7 +24,7 @@ async function onStoreDocument(data) {
 
   // update share relation notice type to 'UPDATE'
   const context = data.context || {}
-  await updateShareRelationNoticeType(documentName, context.userId)
+  // await updateShareRelationNoticeType(documentName, context.userId)
 }
 
 // on db fetch doc
@@ -82,7 +82,7 @@ async function onAuthenticate(data) {
 }
 
 const hocuspocusServer = Server.configure({
-  onAuthenticate,
+  // onAuthenticate,
   onStoreDocument,
   extensions: [
     new Logger(),
