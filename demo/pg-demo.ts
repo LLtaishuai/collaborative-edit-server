@@ -1,18 +1,18 @@
-const pg = require('pg')
-require('dotenv').config()
+import pg from 'pg';
+import 'dotenv/config';
+import logger from '../src/lib/logger.js';
 
-const { Client } = pg
-const url = process.env.DATABASE_URL
+const { Client } = pg;
+const url = process.env.DATABASE_URL;
 
 async function main() {
-  // console.log('url...', url)
-  const client = new Client(url)
+  const client = new Client(url);
 
-  client.on('error', (err) => {
-    console.error('something bad has happened!', err.stack)
-  })
+  client.on('error', (err: Error) => {
+    logger.error(err, 'something bad has happened!');
+  });
 
-  await client.connect()
+  await client.connect();
 
   // const sql = `SELECT table_name FROM information_schema.tables WHERE table_schema='public'` // list all tables
 
@@ -43,7 +43,7 @@ async function main() {
   // const result = await client.query(sql, params)
   // console.log(result.rowCount)
 
-  await client.end()
+  await client.end();
 }
 
-main()
+main();
