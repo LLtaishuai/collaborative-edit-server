@@ -1,13 +1,23 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const KEY = process.env.API_AUTH_KEY;
+import { JWTPayload, SignJWT, jwtVerify } from 'jose'
 
-export interface TokenInfo {
-  userId: string;
+const secret = new TextEncoder().encode(process.env.API_AUTH_KEY)
+
+export interface CollabTokenPayload extends JWTPayload {
+  uid: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function decryptToken(token: string): TokenInfo | null {
-  // Implementation was empty in original file
-  // Returning null as a placeholder to satisfy types
-  return null;
+export async function signCollabToken(payload: CollabTokenPayload) {
+  return await new SignJWT(payload)
+    .setProtectedHeader({
+      alg: 'HS256',
+    })
+    .setIssuedAt()
+    .setExpirationTime('60s')
+    .sign(secret)
+}
+
+export async function verifyCollabToken(token: string) {
+  const { payload } = await jwtVerify(token, secret)
+
+  return payload as CollabTokenPayload
 }

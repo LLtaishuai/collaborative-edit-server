@@ -5,10 +5,10 @@ import { TiptapTransformer } from '@hocuspocus/transformer';
 import * as Y from 'yjs';
 import { basicExts } from './exts.js';
 import { updateDocJsonStr, updateDocBinary, getDocById } from '../db/doc.js';
-import { decryptToken } from '../lib/token.js';
+import { verifyCollabToken } from '../lib/token.js';
 import {
   getShareRelationAccess,
-  // updateShareRelationNoticeType,
+  updateShareRelationNoticeType,
 } from '../db/share-relation.js';
 import logger from '../lib/logger.js';
 
@@ -23,8 +23,8 @@ async function onStoreDocument(data: any) {
   logger.info({ documentName, rowCount }, 'hocuspocus onStoreDocument updated');
 
   // update share relation notice type to 'UPDATE'
-  // const context = data.context || {};
-  // await updateShareRelationNoticeType(documentName, context.userId);
+  const context = data.context || {};
+  await updateShareRelationNoticeType(documentName, context.userId);
 }
 
 // on db fetch doc
@@ -63,10 +63,10 @@ async function onAuthenticate(data: any) {
   const { documentName, token } = data;
   if (!token) throw new Error('Token is required');
 
-  const info = decryptToken(token);
+  const info = await verifyCollabToken(token);
   if (!info) throw new Error('Token is invalid or expired');
 
-  const access = await getShareRelationAccess(documentName, info.userId);
+  const access = await getShareRelationAccess(documentName, info.uid);
   logger.info({ documentName, access }, 'hocuspocus onAuthenticate access');
   
   if (access == null) throw new Error('You do not have access to this document');
@@ -75,12 +75,12 @@ async function onAuthenticate(data: any) {
   }
 
   return {
-    userId: info.userId,
+    userId: info.uid,
   };
 }
 
 export const hocuspocusServer = Server.configure({
-  // onAuthenticate,
+  onAuthenticate,
   onStoreDocument,
   extensions: [
     new Logger(),
