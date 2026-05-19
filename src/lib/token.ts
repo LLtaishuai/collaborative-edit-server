@@ -24,5 +24,5 @@ export async function verifyCollabToken(token: string) {
   /**
    * Zod 校验 payload
    */
-  return collabTokenSchema.parse(payload) as CollabTokenPayload
+  return collabTokenSchema.parse(payload) 
 }
