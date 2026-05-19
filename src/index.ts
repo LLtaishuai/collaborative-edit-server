@@ -5,7 +5,7 @@ import Router from '@koa/router';
 import { hocuspocusServer } from './hocuspocus/index.js';
 import { connect } from './db/client.js';
 import { selectOneDocForMonitor } from './db/doc.js';
-import 'dotenv/config';
+import { env } from './env.js';
 import logger from './lib/logger.js';
 
 const app = new Koa();
@@ -45,7 +45,7 @@ router.get('/collaborate', async (ctx) => {
 app.use(router.routes()).use(router.allowedMethods());
 
 // Start the server
-const port = parseInt(process.env.PORT || '1234', 10);
+const port = env.PORT;
 app.listen(port, () => {
   logger.info(`Server started on port ${port}`);
 });

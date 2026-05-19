@@ -1,9 +1,9 @@
 import pg from 'pg';
-import 'dotenv/config';
+import { env } from '../src/env.js';
 import logger from '../src/lib/logger.js';
 
 const { Client } = pg;
-const url = process.env.DATABASE_URL;
+const url = env.DATABASE_URL;
 
 async function main() {
   const client = new Client(url);

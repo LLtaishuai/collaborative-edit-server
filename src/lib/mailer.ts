@@ -1,13 +1,13 @@
 import nodemailer from 'nodemailer';
-import 'dotenv/config';
+import { env } from '../env.js';
 import logger from './logger.js';
 
 const config = {
-  host: process.env.EMAIL_HOST,
-  port: parseInt(process.env.EMAIL_PORT || '587', 10),
+  host: env.EMAIL_HOST,
+  port: env.EMAIL_PORT,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
+    user: env.EMAIL_USER,
+    pass: env.EMAIL_PASSWORD,
   },
 };
 const transporter = nodemailer.createTransport(config);
@@ -20,9 +20,9 @@ export async function sendEmail(opt: { subject?: string; text?: string } = {}) {
   }
 
   const mailConfig = {
-    from: `划水AI<${process.env.EMAIL_USER}>`, // '昵称<发件人邮箱>'
+    from: `划水AI<${env.EMAIL_USER}>`, // '昵称<发件人邮箱>'
     subject,
-    to: process.env.EMAIL_TO,
+    to: env.EMAIL_TO,
     text,
   };
   const res = await transporter.sendMail(mailConfig);

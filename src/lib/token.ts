@@ -1,6 +1,8 @@
 import { JWTPayload, SignJWT, jwtVerify } from 'jose'
+import { env } from '../env.js'
+import { collabTokenSchema } from '../schemas/auth.js'
 
-const secret = new TextEncoder().encode(process.env.API_AUTH_KEY)
+const secret = new TextEncoder().encode(env.API_AUTH_KEY)
 
 export interface CollabTokenPayload extends JWTPayload {
   uid: string
@@ -19,5 +21,8 @@ export async function signCollabToken(payload: CollabTokenPayload) {
 export async function verifyCollabToken(token: string) {
   const { payload } = await jwtVerify(token, secret)
 
-  return payload as CollabTokenPayload
+  /**
+   * Zod 校验 payload
+   */
+  return collabTokenSchema.parse(payload) as CollabTokenPayload
 }

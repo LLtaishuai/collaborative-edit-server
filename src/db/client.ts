@@ -1,11 +1,11 @@
 import pg from 'pg';
 import { sendEmail } from '../lib/mailer.js';
-import 'dotenv/config';
+import { env } from '../env.js';
 import debounce from 'lodash.debounce';
 import logger from '../lib/logger.js';
 
 const { Client } = pg;
-const url = process.env.DATABASE_URL;
+const url = env.DATABASE_URL;
 
 export let pgClient: any = new Client(url);
 
