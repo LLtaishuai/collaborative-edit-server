@@ -19,7 +19,7 @@ export async function getShareRelationAccess(docId: string, userId: string): Pro
     }
 
     // If not mine, check share relation
-    const getShareRelationSQL = `select * from "ShareRelation" where "docId" = $1 and "userId" = $2`;
+    const getShareRelationSQL = `select access from "ShareRelation" where "docId" = $1 and "userId" = $2 limit 1`;
     const getShareRelationValues = [docId, userId];
     const getShareRelationResult = await pgClient.query(
       getShareRelationSQL,
